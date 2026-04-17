@@ -12,7 +12,7 @@ export function AuthProvider({ children }) {
 
   const login = ({ username, password }) => {
     if (!username || !password) {
-      return { ok: false, error: 'Usuario y contraseña son requeridos.' };
+      return { ok: false, error: 'Usuario y contrase\u00f1a son requeridos.' };
     }
 
     const session = { username };

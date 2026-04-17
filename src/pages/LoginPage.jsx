@@ -35,9 +35,17 @@ function LoginPage() {
 
   return (
     <main className="auth-layout">
-      <section className="card auth-card" aria-label="Formulario de inicio de sesión">
-        <h1>Iniciar sesión</h1>
-        <p>Ingresa para acceder al dashboard de productos.</p>
+      <section className="card auth-card" aria-label="Formulario de inicio de sesi\u00f3n">
+        <span className="eyebrow">Control Center</span>
+        <h1>Iniciar sesi\u00f3n</h1>
+        <p className="auth-copy">
+          Ingresa para acceder al dashboard de productos con una vista clara,
+          r\u00e1pida y elegante.
+        </p>
+        <div className="auth-hint">
+          <span>Demo</span>
+          <strong>Usuario libre + cualquier contrase\u00f1a</strong>
+        </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <label htmlFor="username">Usuario</label>
@@ -51,7 +59,7 @@ function LoginPage() {
             placeholder="admin"
           />
 
-          <label htmlFor="password">Contraseña</label>
+          <label htmlFor="password">Contrase\u00f1a</label>
           <input
             id="password"
             name="password"
@@ -59,12 +67,12 @@ function LoginPage() {
             autoComplete="current-password"
             value={form.password}
             onChange={handleChange}
-            placeholder="••••••"
+            placeholder="******"
           />
 
           {error ? <p className="error-message">{error}</p> : null}
 
-          <button type="submit">Entrar</button>
+          <button type="submit">Entrar al panel</button>
         </form>
       </section>
     </main>
