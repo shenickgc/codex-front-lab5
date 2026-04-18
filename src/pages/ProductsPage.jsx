@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import { useAuth } from '../context/AuthContext';
 import {
   createProductRequest,
   deleteProductRequest,
@@ -14,8 +13,7 @@ const initialForm = {
   stock: '',
 };
 
-function DashboardPage() {
-  const { user, logout } = useAuth();
+function ProductsPage() {
   const [products, setProducts] = useState([]);
   const [form, setForm] = useState(initialForm);
   const [editingId, setEditingId] = useState(null);
@@ -125,37 +123,33 @@ function DashboardPage() {
   });
 
   return (
-    <main className="dashboard-layout">
-      <header className="dashboard-header card">
+    <div className="module-layout">
+      <header className="module-header card">
         <div>
-          <span className="eyebrow">Fleet Overview</span>
-          <h1>Dashboard de productos</h1>
-          <p>
-            Bienvenido, {user?.name}. Sesion activa con {user?.email}.
-          </p>
+          <span className="eyebrow">Modulo</span>
+          <h2>Productos</h2>
+          <p>Alta, edicion y control del inventario desde el CRUD de tu backend.</p>
         </div>
-        <button className="secondary-button" onClick={logout}>
-          Cerrar sesi\u00f3n
-        </button>
+        <span className="status-pill">{isLoading ? 'Cargando...' : 'API conectada'}</span>
       </header>
 
       <section className="dashboard-grid">
         <article className="card stat-card">
           <span className="stat-label">Productos activos</span>
           <strong>{products.length}</strong>
-          <p>Inventario consultado en tiempo real desde tu backend.</p>
+          <p>Inventario consultado en tiempo real desde la API.</p>
         </article>
 
         <article className="card stat-card">
           <span className="stat-label">Stock bajo</span>
           <strong>{lowStockProducts}</strong>
-          <p>Equipos que conviene reabastecer antes del siguiente corte.</p>
+          <p>Equipos con menos de 20 unidades disponibles.</p>
         </article>
 
         <article className="card stat-card">
           <span className="stat-label">Valor estimado</span>
           <strong>{currencyFormatter.format(inventoryValue)}</strong>
-          <p>Calculado con precio por stock disponible de cada producto.</p>
+          <p>Suma de precio por stock de todos los productos.</p>
         </article>
       </section>
 
@@ -296,8 +290,8 @@ function DashboardPage() {
           </table>
         </div>
       </section>
-    </main>
+    </div>
   );
 }
 
-export default DashboardPage;
+export default ProductsPage;

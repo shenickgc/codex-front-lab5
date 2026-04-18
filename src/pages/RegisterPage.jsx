@@ -1,16 +1,17 @@
 import { useState } from 'react';
-import { Link, Navigate, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 
-function LoginPage() {
-  const { isAuthenticated, isBootstrapping, login } = useAuth();
+function RegisterPage() {
+  const { isAuthenticated, isBootstrapping, register } = useAuth();
   const navigate = useNavigate();
-  const location = useLocation();
-  const [form, setForm] = useState({ email: '', password: '' });
+  const [form, setForm] = useState({
+    name: '',
+    email: '',
+    password: '',
+  });
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  const from = location.state?.from?.pathname || '/dashboard/products';
 
   if (isBootstrapping) {
     return null;
@@ -28,7 +29,7 @@ function LoginPage() {
   const handleSubmit = async (event) => {
     event.preventDefault();
     setIsSubmitting(true);
-    const result = await login(form);
+    const result = await register(form);
 
     if (!result.ok) {
       setError(result.error);
@@ -37,59 +38,70 @@ function LoginPage() {
     }
 
     setError('');
-    navigate(from, { replace: true });
+    navigate('/dashboard/products', { replace: true });
   };
 
   return (
     <main className="auth-layout">
-      <section className="card auth-card" aria-label="Formulario de inicio de sesi\u00f3n">
+      <section className="card auth-card" aria-label="Formulario de registro">
         <span className="eyebrow">Control Center</span>
-        <h1>Iniciar sesi\u00f3n</h1>
+        <h1>Crear cuenta</h1>
         <p className="auth-copy">
-          Ingresa para acceder al dashboard de productos con una vista clara,
-          r\u00e1pida y elegante.
+          Registra un usuario nuevo usando el servicio del backend y entra directo
+          al dashboard de productos.
         </p>
         <div className="auth-hint">
           <span>API</span>
-          <strong>Usa el correo y contrasena registrados en el backend</strong>
+          <strong>El registro consume `POST /api/auth/register`</strong>
         </div>
 
         <form className="auth-form" onSubmit={handleSubmit}>
+          <label htmlFor="name">Nombre</label>
+          <input
+            id="name"
+            name="name"
+            type="text"
+            autoComplete="name"
+            value={form.name}
+            onChange={handleChange}
+            placeholder="Shenick"
+          />
+
           <label htmlFor="email">Correo</label>
           <input
             id="email"
             name="email"
             type="email"
-            autoComplete="username"
+            autoComplete="email"
             value={form.email}
             onChange={handleChange}
             placeholder="shenick@example.com"
           />
 
-          <label htmlFor="password">Contrase\u00f1a</label>
+          <label htmlFor="password">Contraseña</label>
           <input
             id="password"
             name="password"
             type="password"
-            autoComplete="current-password"
+            autoComplete="new-password"
             value={form.password}
             onChange={handleChange}
-            placeholder="******"
+            placeholder="Minimo 6 caracteres"
           />
 
           {error ? <p className="error-message">{error}</p> : null}
 
           <button type="submit" disabled={isSubmitting}>
-            {isSubmitting ? 'Ingresando...' : 'Entrar al panel'}
+            {isSubmitting ? 'Registrando...' : 'Crear cuenta'}
           </button>
         </form>
 
         <p className="auth-switch">
-          Aun no tienes cuenta? <Link to="/register">Registrate aqui</Link>
+          Ya tienes cuenta? <Link to="/login">Inicia sesion aqui</Link>
         </p>
       </section>
     </main>
   );
 }
 
-export default LoginPage;
+export default RegisterPage;
